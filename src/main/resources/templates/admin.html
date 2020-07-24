@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ADMIN | Users</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, td, th {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <a th:href="@{/logout}">Log Out</a>
+    <h2>Add User</h2>
+    <form action="/admin/user" method="post">
+        Username: <input type="email" name="username" placeholder="Username" required> <br>
+        Password: <input type="password" name="password" placeholder="Password" required> <br>
+        First Name: <input type="text" name="firstName" placeholder="First Name" required> <br>
+        Last Name: <input type="text" name="lastName" placeholder="Last Name" required> <br>
+        Role:
+        <input type="checkbox" id="1" name="roles_id" value="1"  >
+        <label for="1">Admin</label>
+        <input type="checkbox" id="2" name="roles_id" value="2"  >
+        <label for="2">User</label>
+        <input type="submit" value="Add User">
+    </form><hr>
+
+    <h2>Users</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Fullname</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+            <tbody>
+                <tr th:if="${users.empty}">
+                    <td colspan="5">No Users</td>
+                </tr>
+                <tr th:each="user : ${users}">
+                    <td><span th:text="${user.id}">ID</span></td>
+                    <td><span th:text="${user.username}">Username</span></td>
+                    <td><span th:text="${user.firstName}">Firstname</span>     <span th:text="${user.lastName}">Lastname</span></td>
+                    <td><a th:href="@{'/admin/user/' + ${user.id}}">Edit</a></td>
+                    <td>
+                        <form action="/admin/deleteUser" method="post">
+                            <input type="hidden" name="id" th:value="${user.id}">
+                            <input type="submit" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+    </table>
+</body>
+</html>
