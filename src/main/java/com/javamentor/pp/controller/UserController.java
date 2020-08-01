@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,6 +45,8 @@ public class UserController {
     @GetMapping({"/", "/admin"})
     public String getUsers(ModelMap map) {
         List<User> users = userService.getAllUsers();
+        List<Role> roles = roleService.getAllRoles();
+        map.addAttribute("roles", roles);
         map.addAttribute("users", users);
         return "admin";
     }
@@ -54,6 +55,10 @@ public class UserController {
     public String getUserByIdUpdate(@PathVariable Long id,
                                     ModelMap map) {
         User user = userService.getUserById(id);
+        List<Role> roles = roleService.getAllRoles();
+        List<Long> uroles = user.getRoles().stream().map(Role::getId).collect(Collectors.toList());
+        map.addAttribute("uroles", uroles);
+        map.addAttribute("roles", roles);
         map.addAttribute("user", user);
         return "editUser";
     }
@@ -61,19 +66,20 @@ public class UserController {
     @PostMapping("/admin/user")
     public String addUser(@ModelAttribute User user,
                           @RequestParam Set<Long> roles_id){
-        Set<Role> roles = roles_id.stream().map(roleService::getRoleById).collect(Collectors.toSet());
-        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.addUser(user);
+        userService.addUser(user, roles_id);
         return "redirect:/admin";
     }
 
     @PostMapping("/admin/updateUser")
     public String editUser(@ModelAttribute User user,
                            @RequestParam Set<Long> roles_id) {
-        Set<Role> roles = roles_id.stream().map(roleService::getRoleById).collect(Collectors.toSet());
-        user.setRoles(roles);
-        userService.updateUser(user);
+        String userPassword = userService.getUserById(user.getId()).getPassword();
+        if (!(userPassword.equals(user.getPassword()) ||
+                userPassword.equals(passwordEncoder.encode(user.getPassword())))) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        userService.updateUser(user, roles_id);
         return "redirect:/admin";
     }
 

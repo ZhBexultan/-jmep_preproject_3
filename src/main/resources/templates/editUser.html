@@ -13,10 +13,11 @@
     First Name: <input type="text" name="firstName" th:value="${user.firstName}" required> <br>
     Last Name: <input type="text" name="lastName" th:value="${user.lastName}" required> <br>
     Role:
-    <input type="checkbox" id="1" name="roles_id" value="1" >
-    <label for="1">Admin</label>
-    <input type="checkbox" id="2" name="roles_id" value="2"  >
-    <label for="2">User</label>
+    <th:block th:each="role : ${roles}">
+        <input type="checkbox" th:id="${role.id}" name="roles_id" th:value="${role.id}"
+               th:checked="${uroles.contains(role.id)}">
+        <label th:for="${role.id}" th:text="${role.authority.substring(5)}">Role</label>
+    </th:block><br>
     <input type="submit" value="Update">
 </form>
 <a href="/admin">Back</a>
