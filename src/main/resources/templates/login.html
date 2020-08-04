@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>LOGIN</title>
 </head>
 <body>
 <div>
-    <form method="post" action="/login">
-        <input type="email" name="j_username" placeholder="Username" required/> <br>
-        <input type="password" name="j_password" placeholder="Password" required/><br>
-        <input type="submit" value="Login"/>
-    </form>
+    <div class="col-md-3 mx-auto mt-5">
+        <form method="post" action="/login">
+            <p class="h4 font-weight-bold">Please sign in</p>
+            <div class="form-group mb-0">
+                <input type="email" name="j_username" class="form-control" placeholder="Email address" required/>
+            </div>
+            <div class="form-group mb-2">
+                <input type="password" name="j_password" class="form-control" placeholder="Password" required/>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block font-weight-bold">Sign in</button>
+        </form>
+    </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

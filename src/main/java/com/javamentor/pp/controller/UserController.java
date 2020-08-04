@@ -37,21 +37,35 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public String getUserById(@AuthenticationPrincipal Principal user, ModelMap map) {
-        map.addAttribute("user", user);
+    public String getUserById(@AuthenticationPrincipal Principal principal, ModelMap map) {
+        User user = userService.getUserByUsername(principal.getName());
+        map.addAttribute("active_user", user);
         return "user";
     }
 
     @GetMapping({"/", "/admin"})
-    public String getUsers(ModelMap map) {
+    public String getUsers(@AuthenticationPrincipal Principal principal,
+                           ModelMap map) {
         List<User> users = userService.getAllUsers();
         List<Role> roles = roleService.getAllRoles();
+        User user = userService.getUserByUsername(principal.getName());
+        map.addAttribute("active_user", user);
         map.addAttribute("roles", roles);
         map.addAttribute("users", users);
         return "admin";
     }
 
-    @GetMapping("/admin/user/{id}")
+    @GetMapping("/admin/addNewUser")
+    public String newUser(@AuthenticationPrincipal Principal principal,
+                           ModelMap map) {
+        List<Role> roles = roleService.getAllRoles();
+        User user = userService.getUserByUsername(principal.getName());
+        map.addAttribute("active_user", user);
+        map.addAttribute("roles", roles);
+        return "addNewUser";
+    }
+
+/*    @GetMapping("/admin/user/{id}")
     public String getUserByIdUpdate(@PathVariable Long id,
                                     ModelMap map) {
         User user = userService.getUserById(id);
@@ -60,8 +74,8 @@ public class UserController {
         map.addAttribute("uroles", uroles);
         map.addAttribute("roles", roles);
         map.addAttribute("user", user);
-        return "editUser";
-    }
+        return "addNewUser";
+    }*/
 
     @PostMapping("/admin/user")
     public String addUser(@ModelAttribute User user,
