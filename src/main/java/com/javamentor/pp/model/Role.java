@@ -8,10 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.Set;
 
 @Data
 @Entity
@@ -25,12 +22,9 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String role;
 
-    @Transient
-    @ManyToMany(mappedBy = "t_role")
-    private Set<User> users;
-
     @Override
     public String getAuthority() {
         return role;
     }
+
 }

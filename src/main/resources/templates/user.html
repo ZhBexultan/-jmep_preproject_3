@@ -11,10 +11,8 @@
 <body>
 <nav class="navbar navbar-light bg-dark fixed-top">
       <span class="navbar-brand text-white">
-          <strong th:text="${active_user.username}"></strong> with roles:
-          <span th:each="role : ${active_user.roles}">
-              <span th:text="${role.role.substring(5)}">Role</span>
-          </span>
+          <strong class="user_email"></strong> with roles:
+          <span class="user_roles">Role</span>
       </span>
     <ul class="navbar-nav">
         <li class="nav-item text-nowrap">
@@ -29,7 +27,10 @@
             <div class="sidebar-sticky bg-white">
                 <ul class="nav flex-column mt-3">
                     <li class="nav-item">
-                        <a href="/user" class="nav-link text-white bg-primary rounded">User</a>
+                        <a href="/admin" id="admin_link" style="display: none" class="nav-link text-primary bg-white rounded">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user" id="user_link" class="nav-link text-white bg-primary rounded">User</a>
                     </li>
                 </ul>
             </div>
@@ -41,7 +42,7 @@
                 About user
             </p>
             <div class="border bg-white p-3 rounded-bottom">
-                <table class="table table-striped">
+                <table id="user_table" class="table table-striped">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -53,18 +54,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td th:text="${active_user.id}">ID</td>
-                        <td th:text="${active_user.firstName}">Fname</td>
-                        <td th:text="${active_user.lastName}">Lname</td>
-                        <td th:text="${active_user.age}">Age</td>
-                        <td th:text="${active_user.username}">Uname</td>
-                        <td>
-                            <span th:each="role : ${active_user.roles}">
-                                <span th:text="${role.role.substring(5)}">Role</span>
-                            </span>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td class="user_id"></td>
+                            <td class="user_firstName"></td>
+                            <td class="user_lastName"></td>
+                            <td class="user_age"></td>
+                            <td class="user_email"></td>
+                            <td class="user_roles"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -75,5 +72,32 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    fillUserData();
+
+    function fillUserData() {
+        var user_roles = "";
+        var activeUser_roles = document.getElementsByClassName('user_roles');
+        var activeUser_email = document.getElementsByClassName('user_email');
+        fetch('http://localhost:8080/api/activeUser')
+            .then(response => response.json())
+            .then(user => {
+                for (var i = 0; i < user.roles.length; i++) {
+                    user_roles += user.roles[i].name.substring(5) + " ";
+                    if (user.roles[i].id === 1) {
+                        document.getElementById('admin_link').style.display = "block";
+                    }
+                }
+                document.getElementsByClassName('user_id')[0].innerHTML = user.id;
+                document.getElementsByClassName('user_firstName')[0].innerHTML = user.firstName;
+                document.getElementsByClassName('user_lastName')[0].innerHTML = user.lastName;
+                document.getElementsByClassName('user_age')[0].innerHTML = user.age;
+                activeUser_email[0].innerHTML = user.username;
+                activeUser_email[1].innerHTML = user.username;
+                activeUser_roles[0].innerHTML = user_roles;
+                activeUser_roles[1].innerHTML = user_roles;
+            });
+    }
+</script>
 </body>
 </html>

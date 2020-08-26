@@ -8,6 +8,7 @@ import java.util.Set;
 public interface UserService {
 
     void addUser(User user, Set<Long> roles_id);
+    void addUser(User user);
     void updateUser(User user, Set<Long> roles_id);
     void deleteUser(Long id);
     List<User> getAllUsers();
