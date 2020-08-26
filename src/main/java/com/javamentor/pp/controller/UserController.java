@@ -36,14 +36,14 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/user")
+    /*@GetMapping("/user")
     public String getUserById(@AuthenticationPrincipal Principal principal, ModelMap map) {
         User user = userService.getUserByUsername(principal.getName());
         map.addAttribute("active_user", user);
         return "user";
-    }
+    }*/
 
-    @GetMapping({"/", "/admin"})
+/*    @GetMapping({"/", "/admin"})
     public String getUsers(@AuthenticationPrincipal Principal principal,
                            ModelMap map) {
         List<User> users = userService.getAllUsers();
@@ -53,9 +53,9 @@ public class UserController {
         map.addAttribute("roles", roles);
         map.addAttribute("users", users);
         return "admin";
-    }
+    }*/
 
-    @GetMapping("/admin/addNewUser")
+    /*@GetMapping("/admin/addNewUser")
     public String newUser(@AuthenticationPrincipal Principal principal,
                            ModelMap map) {
         List<Role> roles = roleService.getAllRoles();
@@ -63,7 +63,7 @@ public class UserController {
         map.addAttribute("active_user", user);
         map.addAttribute("roles", roles);
         return "addNewUser";
-    }
+    }*/
 
 /*    @GetMapping("/admin/user/{id}")
     public String getUserByIdUpdate(@PathVariable Long id,
